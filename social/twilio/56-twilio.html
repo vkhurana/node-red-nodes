@@ -25,6 +25,13 @@
             To</label>
         <input type="text" id="node-input-number" placeholder="01234 5678901">
     </div>
+    <div class="form-row hidden" id="node-input-method-row">
+        <label for="node-input-method"><i class="fa fa-list-ul"></i> Method</label>
+        <select id="node-input-method" style="width:125px !important">
+          <option value="GET">GET</option>
+          <option value="POST">POST</option>
+        </select>
+    </div>
     <div class="form-row hidden" id="node-input-twiliourl-row">
         <label for="node-input-url"><i class="fa fa-globe"></i> URL</label>
         <input type="text" id="node-input-url" placeholder="http://someurl.com/twiml.xml" >
@@ -95,6 +102,7 @@
                     }
                 },
                 twilioType: {value:"sms"},
+                method: {value:"GET"},
                 url: {value:""},
                 number: {value:""},
                 name: {value:""}
@@ -139,20 +147,30 @@
                     }
                 }
 
+                if (this.method === null) {
+                    this.method = "GET";
+                }
+
                 $("#node-input-twilioType").change(function() {
                     var twilioType = $("#node-input-twilioType option:selected").val();
                     if (twilioType == "call") {
                         $("#node-input-twiliourl-row").show();
+                        $("#node-input-method-row").show();
                         $("#node-input-number-icon-call").show();
                         $("#node-input-number-icon-sms").hide();
                     } else {
                         $("#node-input-twiliourl-row").hide();
+                        $("#node-input-method-row").hide();
                         $("#node-input-number-icon-call").hide();
                         $("#node-input-number-icon-sms").show();
                     }
                 });
+
                 $("#node-input-twilioType").val(this.twilioType);
                 $("#node-input-twilioType").change();
+
+                $("#node-input-method").val(this.method);
+                $("#node-input-method").change();
             }
         });
     })();

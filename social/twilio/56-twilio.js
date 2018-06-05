@@ -46,6 +46,7 @@ module.exports = function(RED) {
         }
 
         this.twilioType = n.twilioType;
+        this.method = n.method;
         this.url = n.url;
         var node = this;
         this.on("input",function(msg) {
@@ -58,7 +59,7 @@ module.exports = function(RED) {
                 if ( this.twilioType == "call" ) {
                     // Make a call
                     var twimlurl = node.url || msg.payload;
-                    node.twilioClient.calls.create({to: tonum, from: node.fromNumber, url: twimlurl}).catch(function(err) {
+                    node.twilioClient.calls.create({to: tonum, from: node.fromNumber, url: twimlurl, method: this.method == "GET" ? "GET" : "POST"}).catch(function(err) {
                         node.error(err.message,msg);
                     });
                 }
